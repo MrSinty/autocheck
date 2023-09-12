@@ -35,6 +35,7 @@ def clicking_button():
     finally:
         element.click()
 
+
     driver.implicitly_wait(1)
     element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/form/div[1]/div/div/input")
     element.send_keys("mrsinty@gmail.com")
