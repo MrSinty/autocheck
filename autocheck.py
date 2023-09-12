@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 #cron schedule 0 5/2 * * 1-6
 
 app = Flask(__name__)
-driver = None
+#driver = None
 
 def download_selenium():
     chrome_options = webdriver.ChromeOptions()
@@ -22,11 +22,11 @@ def download_selenium():
         return "Failed to load Chrome Driver"
     
     driver.get("https://digital.etu.ru/attendance/student")
-    result = clicking_button()
+    result = clicking_button(driver)
     driver.close()
     return result
 
-def clicking_button():
+def clicking_button(driver):
     element = None
     try:
         element = WebDriverWait(driver, 10).until(
