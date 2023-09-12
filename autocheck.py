@@ -29,10 +29,12 @@ def download_selenium():
 def clicking_button(driver):
     element = None
     try:
-        element = WebDriverWait(driver, 10).until(
+        element = WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button'))
         )
-    finally:
+    except:
+        return "Failed to find 'Войти через ETU ID' button"
+    else:
         element.click()
 
 
