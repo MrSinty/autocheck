@@ -3,6 +3,7 @@ import time
 from flask import Flask, request
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
+# py -3 -m pip install webdriver_manager
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
