@@ -19,7 +19,8 @@ def download_selenium():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-smh-usage")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
-    driver.get("https://digital.etu.ru/attendance/student")
+    #driver.get("https://digital.etu.ru/attendance/student")
+    driver.get("https://google.com")
     title = driver.title
     return title
 

@@ -7,4 +7,4 @@ ENV PATH /home/root/.local/bin:${PATH}
 RUN apt-get update && apt-get install -y python3-pip && pip install -r requirments.txt
 RUN pip install uvicorn==0.20.0
 COPY . .
-CMD python3 -m uvicorn autocheck:app --host 0.0.0.0 --port $PORT
+CMD python3 -m uvicorn main:app --host 0.0.0.0 --port $PORT
