@@ -18,6 +18,8 @@ def download_selenium():
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-smh-usage")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+    # драйвер не открывается на серве, надо как-то починить
+    print(driver)
     if (not driver):
         return "Failed to load Chrome Driver"
     
@@ -55,7 +57,10 @@ def clicking_button(driver):
     else:
         return "Failed to press 'Авторизоваться' button"
 
-    element = driver.find_element(By.XPATH, 'XPATH //*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
+
+    driver.implicitly_wait(5)
+    element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
+    print(element)
     if (element):
         element.click()
     else:
@@ -63,11 +68,11 @@ def clicking_button(driver):
 
     return "Success!"
 
-@app.route('/', methods=['GET','POST'])
+@app.route('/') # , methods=['GET','POST']
 def home():
-    if(request.method == 'GET'):
-        return download_selenium()
-    #elif(request.method == 'POST'):
+    # if(request.method == 'GET'):
+    return download_selenium()
+    # elif(request.method == 'POST'):
 
 if (__name__ == "__main__"):
     app.run(debug=True, port=3000)
