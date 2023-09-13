@@ -32,41 +32,50 @@ def download_selenium():
 
 def clicking_button(driver):
     element = None
-    try:
-        element = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button'))
-        )
-    except:
-        return "Failed to find 'Войти через ETU ID' button"
-    else:
-        element.click()
-
-
-    driver.implicitly_wait(1)
-    element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/form/div[1]/div/div/input")
-    element.send_keys("mrsinty@gmail.com")
-    element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/form/div[2]/div/div/input")
-    element.send_keys("Irjkf2345")
-    element.send_keys(Keys.RETURN)
-    if (not element):
-        return "Failed to enter email or password (maybe there's no such element)"
-
+    # try:
+    #     element = WebDriverWait(driver, 15).until(
+    #         EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button'))
+    #     )
+    # except:
+    #     return "Failed to find 'Войти через ETU ID' button"
+    # else:
+    #     element.click()
     driver.implicitly_wait(5)
-
-    element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/div[4]/div/div[2]/form/button")
+    element = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button') # Войти через ETU ID
     if (element):
         element.click()
-    else:
-        return "Failed to press 'Авторизоваться' button"
 
+        driver.implicitly_wait(2)
+        element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/form/div[1]/div/div/input")
+        element.send_keys("mrsinty@gmail.com")
+        element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/form/div[2]/div/div/input")
+        element.send_keys("Irjkf2345")
+        element.send_keys(Keys.RETURN)
 
-    driver.implicitly_wait(5)
-    element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
-    print(element)
-    if (element):
-        element.click()
+        if (element):
+            
+            driver.implicitly_wait(5)
+            element = driver.find_element(By.XPATH, "/html/body/div/div[1]/div/div[2]/div/div[4]/div/div[2]/form/button")
+            #авторизоваться
+            element.click()
+
+            driver.implicitly_wait(5)
+            element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
+        
+            if (element):
+                element.click()
+            else:
+                return "Failed to press 'Посетил' button after authorization"
+        else:
+            return "Failed to enter email or password (maybe there's no such element)"
     else:
-        return "Failed to press 'Посетил' button"
+        driver.implicitly_wait(5)
+        element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
+        
+        if (element):
+            element.click()
+        else:
+            return "Failed to press 'Посетил' button without authorization"
 
     return "Success!"
 
