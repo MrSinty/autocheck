@@ -14,9 +14,9 @@ app = Flask(__name__)
 
 def download_selenium():
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-smh-usage")
+    # chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--no-sandbox")
+    # chrome_options.add_argument("--disable-dev-smh-usage")
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
     # драйвер не открывается на серве, надо как-то починить
     print(driver)
