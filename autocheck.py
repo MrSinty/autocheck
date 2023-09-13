@@ -10,14 +10,16 @@ from selenium.webdriver.common.by import By
 #cron schedule 0 5/2 * * 1-6
 
 app = Flask(__name__)
-#driver = None
+# driver = None
 
 def download_selenium():
     chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument("--headless")
-    # chrome_options.add_argument("--no-sandbox")
-    # chrome_options.add_argument("--disable-dev-smh-usage")
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-smh-usage")
+    chrome_options.add_argument("./chromedriver/chromedriver.exe")
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     # драйвер не открывается на серве, надо как-то починить
     print(driver)
     if (not driver):
