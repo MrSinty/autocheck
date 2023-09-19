@@ -1,16 +1,15 @@
 from flask import Flask, request
+from flask_script import Manager, Server
 from selenium.webdriver.chrome.service import Service
 from selenium import webdriver
 # py -3 -m pip install webdriver_manager
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 #cron schedule 0 5/2 * * 1-6
-
-app = Flask(__name__)
-# driver = None
 
 def download_selenium():
     chrome_options = webdriver.ChromeOptions()
@@ -20,8 +19,8 @@ def download_selenium():
     chrome_options.add_argument("./chromedriver/chromedriver.exe")
     # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
     driver = webdriver.Chrome(options=chrome_options)
+
     # драйвер не открывается на серве, надо как-то починить
-    print(driver)
     if (not driver):
         return "Failed to load Chrome Driver"
     
@@ -32,14 +31,10 @@ def download_selenium():
 
 def clicking_button(driver):
     element = None
-    # try:
-    #     element = WebDriverWait(driver, 15).until(
-    #         EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button'))
-    #     )
-    # except:
-    #     return "Failed to find 'Войти через ETU ID' button"
-    # else:
-    #     element.click()
+
+    if (not driver):
+        return "Failed to load Chrome Driver"
+
     driver.implicitly_wait(5)
     element = driver.find_element(By.XPATH, '//*[@id="app"]/div/div[2]/div/div/div[2]/p/div/button') # Войти через ETU ID
     if (element):
@@ -60,33 +55,56 @@ def clicking_button(driver):
             element.click()
 
             driver.implicitly_wait(5)
+
             element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
-        
-            if (element):
+
+            print('!!!')
+
+            try:
                 element.click()
-            else:
+            except WebDriverException:
                 return "Failed to press 'Посетил' button after authorization"
+            
         else:
             return "Failed to enter email or password (maybe there's no such element)"
+        
     else:
         driver.implicitly_wait(5)
         element = driver.find_element(By.XPATH, '//*[@id="__BVID__47"]/div/div/div[1]/div/div/button')
-        
-        if (element):
+
+        print('@@@')
+
+        try:
             element.click()
-        else:
+        except WebDriverException:
             return "Failed to press 'Посетил' button without authorization"
 
     return "Success!"
 
-@app.route('/') # , methods=['GET','POST']
-def home():
+class CustomServer(Server):
+    def __call__(self, app, *args, **kwargs):
+        download_selenium()
+        return Server.__call__(self, app, *args, **kwargs)
+
+app = Flask(__name__)
+manager = Manager(app)
+manager.add_command('runserver', CustomServer(port=3000))
+
+if __name__ == "__main__":
+    manager.run()
+
+# app = Flask(__name__)
+# driver = None
+
+# @app.route('/') # , methods=['GET','POST']
+# def home():
     # if(request.method == 'GET'):
-    return download_selenium()
+    # return download_selenium()
     # elif(request.method == 'POST'):
 
-if (__name__ == "__main__"):
-    app.run(debug=True, port=3000)
+
+
+
 
 
 #driver = webdriver.Chrome()
