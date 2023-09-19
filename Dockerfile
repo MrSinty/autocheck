@@ -8,4 +8,3 @@ RUN apt-get update && apt-get install -y python3-pip && pip install -r requirmen
 RUN pip install gunicorn==21.2.0
 COPY . .
 CMD python3 -m gunicorn main:app
-#CMD python3 -m uvicorn main:app --host 0.0.0.0 --port $PORT
